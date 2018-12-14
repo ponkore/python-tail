@@ -49,7 +49,7 @@ class Tail(object):
         Arguments:
             s - Number of seconds to wait between each iteration; Defaults to 1. '''
 
-        with open(self.tailed_file, encoding=self.encoding) as file_:
+        with open(self.tailed_file, 'rb') as file_:
             # Go to the end of file
             file_.seek(0, 2)
             while True:
@@ -59,7 +59,8 @@ class Tail(object):
                     file_.seek(curr_position)
                     time.sleep(s)
                 else:
-                    self.callback(line)
+                    decoded = line.decode(self.encoding)
+                    self.callback(decoded)
 
     def register_callback(self, func):
         ''' Overrides default callback function to provided function. '''
